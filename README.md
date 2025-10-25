@@ -5,6 +5,7 @@ A REST API for managing shopping lists, meals, and items built with Node.js, Exp
 ## Quick Start
 
 1. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -13,6 +14,7 @@ A REST API for managing shopping lists, meals, and items built with Node.js, Exp
    - Create a project at [supabase.com](https://supabase.com)
 
 3. Create `.env` file:
+
    ```env
    PORT=3000
    NODE_ENV=development
