@@ -11,7 +11,7 @@ export class ListService {
     const { data, error } = await supabase
       .schema("base_schema")
       .from("shopping_list")
-      .select("id, name, created_at, updated_at");
+      .select("id, name, created_at, updated_at, list_items:list_item(count)");
 
     if (error) throw error;
     return data;
@@ -27,7 +27,7 @@ export class ListService {
     const { data, error } = await supabase
       .schema("base_schema")
       .from("shopping_list")
-      .select("id, name, created_at")
+      .select("id, name, created_at, updated_at, list_items:list_item(count)")
       .eq("id", id);
 
     if (error) throw error;
