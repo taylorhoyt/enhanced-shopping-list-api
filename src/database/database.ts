@@ -15,4 +15,16 @@ const supabaseConnection = () => {
   }
 };
 
-export { supabaseConnection };
+const getUserSupabaseClient = (authorization: string) => {
+  return createClient<Database>(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_PUBLISHABLE_KEY!,
+    {
+      global: {
+        headers: { Authorization: `Bearer ${authorization.split(" ")[1]}` },
+      },
+    },
+  );
+};
+
+export { supabaseConnection, getUserSupabaseClient };
