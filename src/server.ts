@@ -5,6 +5,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import itemRoutes from "@/routes/itemRoutes";
 import mealRoutes from "@/routes/mealRoutes";
+import listRoutes from "@/routes/listRoutes";
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.get("/", (req: Request, res: Response) => {
 // API Routes
 app.use("/api/items", itemRoutes);
 app.use("/api/meals", mealRoutes);
+app.use("/api/lists", listRoutes);
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
