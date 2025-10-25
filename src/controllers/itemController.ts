@@ -14,3 +14,30 @@ export const getAllItems = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Error getting items" });
   }
 };
+
+
+export const getItemById = async (req: Request, res: Response) => {
+  const itemService = new ItemService();
+  try {
+    const supabase = getUserSupabaseClient(req.headers.authorization!);
+    const data = await itemService.getItemById(supabase, req.params.id);
+
+    return res.status(200).json(data);
+  } catch (error: any) {
+    console.error("Error getting item:", error.message);
+    return res.status(500).json({ error: "Error getting item" });
+  }
+};
+
+export const getItemsByCategory = async (req: Request, res: Response) => {
+  const itemService = new ItemService();
+  try {
+    const supabase = getUserSupabaseClient(req.headers.authorization!);
+    const data = await itemService.getItemsByCategory(supabase, req.params.category);
+
+    return res.status(200).json(data);
+  } catch (error: any) {
+    console.error("Error getting items by category:", error.message);
+    return res.status(500).json({ error: "Error getting items by category" });
+  }
+};
