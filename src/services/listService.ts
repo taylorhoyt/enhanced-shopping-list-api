@@ -44,7 +44,7 @@ export class ListService {
     const { data, error } = await supabase
       .schema("base_schema")
       .from("list_item")
-      .select("item:item(id, name, category), quantity, unit")
+      .select("item:item(id, name, category), quantity, unit, is_purchased")
       .eq("list_id", id);
 
     if (error) throw error;
