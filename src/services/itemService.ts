@@ -2,6 +2,11 @@ import { Database } from "@/types/supabase";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 export class ItemService {
+  /**
+   * Get all items
+   * @param supabase - The Supabase client
+   * @returns All items
+   */
   async getAllItems(supabase: SupabaseClient<Database>) {
     const { data, error } = await supabase
       .schema("base_schema")
@@ -11,4 +16,39 @@ export class ItemService {
     if (error) throw error;
     return data;
   }
+
+  /**
+   * Get an item by id
+   * @param supabase - The Supabase client
+   * @param id - The id of the item
+   * @returns The item
+   */
+  async getItemById(supabase: SupabaseClient<Database>, id: string) {
+    const { data, error } = await supabase
+      .schema("base_schema")
+      .from("item")
+      .select("id, name, category, created_at")
+      .eq("id", id);
+
+    if (error) throw error;
+    return data;
+  }
+
+  /**
+   * Get items by category
+   * @param supabase - The Supabase client
+   * @param category - The category of the items
+   * @returns The items
+   */
+  async getItemsByCategory(supabase: SupabaseClient<Database>, category: string) {
+    const { data, error } = await supabase
+      .schema("base_schema")
+      .from("item")
+      .select("id, name, category, created_at")
+      .eq("category", category);
+
+    if (error) throw error;
+    return data;
+  }
 }
+  
