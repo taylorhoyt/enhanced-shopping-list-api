@@ -83,3 +83,29 @@ export const updateItemPurchasedState = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Error updating item purchased state" });
   }
 };
+
+export const updateItemQuantity = async (req: Request, res: Response) => {
+  const listService = new ListService();
+  try {
+    const supabase = getUserSupabaseClient(req.headers.authorization!);
+    const data = await listService.updateItemQuantity(supabase, req.params.id, req.params.listItemId, req.body.quantity);
+
+    return res.status(200).json(data);
+  } catch (error: any) {
+    console.error("Error updating item quantity:", error.message);
+    return res.status(500).json({ error: "Error updating item quantity" });
+  }
+};
+
+export const updateItemUnit = async (req: Request, res: Response) => {
+  const listService = new ListService();
+  try {
+    const supabase = getUserSupabaseClient(req.headers.authorization!);
+    const data = await listService.updateItemUnit(supabase, req.params.id, req.params.listItemId, req.body.unit);
+
+    return res.status(200).json(data);
+  } catch (error: any) {
+    console.error("Error updating item unit:", error.message);
+    return res.status(500).json({ error: "Error updating item unit" });
+  }
+};

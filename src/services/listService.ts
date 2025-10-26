@@ -148,4 +148,28 @@ export class ListService {
     if (error) throw error;
     return data;
   }
+
+  async updateItemQuantity(supabase: SupabaseClient<Database>, id: string, listItemId: string, quantity: number) {
+    const { data, error } = await supabase
+      .schema("base_schema")
+      .from("list_item")
+      .update({ quantity: quantity })
+      .eq("id", listItemId)
+      .select("id, item_id, quantity")
+      .single();
+    if (error) throw error;
+    return data;
+  }
+
+  async updateItemUnit(supabase: SupabaseClient<Database>, id: string, listItemId: string, unit: string) {
+    const { data, error } = await supabase
+      .schema("base_schema")
+      .from("list_item")
+      .update({ unit: unit })
+      .eq("id", listItemId)
+      .select("id, item_id, unit")
+      .single();
+    if (error) throw error;
+    return data;
+  }
 }
