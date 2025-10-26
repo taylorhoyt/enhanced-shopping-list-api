@@ -114,7 +114,13 @@ export interface UpdateItemQuantityRequest {
 
 export interface CreateListRequest {
   name: string;
-  created_by: string; // UUID
+  items?: {
+    item_id: string; // UUID
+    quantity: number;
+    unit?: string;
+    meal_id?: string; // UUID
+    meal_quantity?: number;
+  }[];
 }
 
 export interface UpdateListRequest {

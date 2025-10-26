@@ -1,7 +1,53 @@
+import { CreateListRequest } from "@/types";
 import { Database } from "@/types/supabase";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 export class ListService {
+  /**
+   * Create a new shopping list with items
+   * @param supabase - The Supabase client
+   * @param name - The name of the list
+   * @param items - Optional array of items that come from meals or standalone items
+   * @returns The created list
+   */
+  async createList(
+    supabase: SupabaseClient<Database>,
+    list: CreateListRequest,
+  ) {
+    // First, create the shopping list to get the ID
+    const { data: listData, error: listError } = await supabase
+      .schema("base_schema")
+      .from("shopping_list")
+      .insert({ name: list.name })
+      .select("id")
+      .single();
+
+    if (listError) throw listError;
+    const listId = listData.id;
+
+    // Create list items for meal items (with meal_id)
+    if (list.items && list.items.length > 0) {
+      const listItems = list.items.map(item => ({
+        item_id: item.item_id,
+        list_id: listId,
+        quantity: item.quantity,
+        unit: item.unit || null,
+        meal_id: item.meal_id || null,
+        meal_quantity: item.meal_quantity || null
+      }));
+
+      const { error: listItemsError } = await supabase
+        .schema("base_schema")
+        .from("list_item")
+        .insert(listItems);
+
+      if (listItemsError) throw listItemsError;
+    }
+
+    // Return the created list with items
+    return await this.getListById(supabase, listId);
+  }
+
   /**
    * Get all lists
    * @param supabase - The Supabase client
@@ -74,4 +120,6 @@ export class ListService {
     
     return uniqueMeals;
   }
+
+  
 }

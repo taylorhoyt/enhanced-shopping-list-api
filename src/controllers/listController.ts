@@ -1,6 +1,23 @@
 import { Request, Response } from "express";
 import { getUserSupabaseClient } from "@/database/database";
 import { ListService } from "@/services/listService";
+import { CreateListRequest } from "@/types";
+
+export const createList = async (req: Request, res: Response) => {
+  const listService = new ListService();
+  try {
+    const supabase = getUserSupabaseClient(req.headers.authorization!);
+    const data = await listService.createList(
+      supabase,
+      req.body as CreateListRequest
+    );
+
+    return res.status(201).json(data);
+  } catch (error: any) {
+    console.error("Error creating list:", error.message);
+    return res.status(500).json({ error: "Error creating list" });
+  }
+};
 
 export const getAllLists = async (req: Request, res: Response) => {
   const listService = new ListService();
