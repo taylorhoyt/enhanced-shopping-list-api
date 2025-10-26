@@ -40,3 +40,16 @@ export const getMealItems = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Error getting meal items" });
   }
 };
+
+export const createMeal = async (req: Request, res: Response) => {
+  const mealService = new MealService();
+  try {
+    const supabase = getUserSupabaseClient(req.headers.authorization!);
+    const data = await mealService.createMeal(supabase, req.body);
+
+    return res.status(200).json(data);
+  } catch (error: any) {
+    console.error("Error creating meal:", error.message);
+    return res.status(500).json({ error: "Error creating meal" });
+  }
+};

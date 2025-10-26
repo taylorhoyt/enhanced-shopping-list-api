@@ -85,7 +85,11 @@ export interface UpdateItemRequest {
 
 export interface CreateMealRequest {
   name: string;
-  created_by: string; // UUID
+  items: {
+    item_id: string; // UUID
+    quantity: number;
+    unit?: string;
+  }[];
 }
 
 export interface UpdateMealRequest {
