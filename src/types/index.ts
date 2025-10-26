@@ -79,8 +79,8 @@ export interface CreateItemRequest {
 }
 
 export interface UpdateItemRequest {
-  name: string;
-  category: string;
+  name?: string;
+  category?: string;
 }
 
 export interface CreateMealRequest {
