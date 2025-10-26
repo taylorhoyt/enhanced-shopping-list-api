@@ -92,5 +92,22 @@ export class ItemService {
     if (error) throw error;
     return data;
   }
+
+  /**
+   * Delete an item
+   * @param supabase - The Supabase client
+   * @param id - The id of the item
+   * @returns { success: true } if the item was deleted
+   */
+  async deleteItem(supabase: SupabaseClient<Database>, id: string) {
+    const { error } = await supabase
+      .schema("base_schema")
+      .from("item")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+    return { success: true };
+  }
 }
   
