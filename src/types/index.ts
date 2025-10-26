@@ -76,7 +76,6 @@ export interface ListItemRelation {
 export interface CreateItemRequest {
   name: string;
   category: string;
-  created_by: string; // UUID
 }
 
 export interface UpdateItemRequest {
