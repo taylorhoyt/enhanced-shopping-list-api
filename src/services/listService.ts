@@ -214,4 +214,20 @@ export class ListService {
     if (error) throw error;
     return { success: true };
   }
+
+  /**
+   * Delete a list
+   * @param supabase - The Supabase client
+   * @param id - The id of the list
+   * @returns { success: true } if the list was deleted
+   */
+  async deleteList(supabase: SupabaseClient<Database>, id: string) {
+    const { error } = await supabase
+      .schema("base_schema")
+      .from("shopping_list")
+      .delete()
+      .eq("id", id);
+    if (error) throw error;
+    return { success: true };
+  }
 }
