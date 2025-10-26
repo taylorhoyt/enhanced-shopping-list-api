@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getUserSupabaseClient } from "@/database/database";
 import { ListService } from "@/services/listService";
-import { CreateListRequest } from "@/types";
+import { AddItemToListRequest, CreateListRequest } from "@/types";
 
 export const createList = async (req: Request, res: Response) => {
   const listService = new ListService();
@@ -107,5 +107,18 @@ export const updateItemUnit = async (req: Request, res: Response) => {
   } catch (error: any) {
     console.error("Error updating item unit:", error.message);
     return res.status(500).json({ error: "Error updating item unit" });
+  }
+};
+
+export const addItemToList = async (req: Request, res: Response) => {
+  const listService = new ListService();
+  try {
+    const supabase = getUserSupabaseClient(req.headers.authorization!);
+    const data = await listService.addItemToList(supabase, req.params.id, req.body as AddItemToListRequest);
+
+    return res.status(200).json(data);
+  } catch (error: any) {
+    console.error("Error adding item to list:", error.message);
+    return res.status(500).json({ error: "Error adding item to list" });
   }
 };

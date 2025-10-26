@@ -1,4 +1,4 @@
-import { CreateListRequest } from "@/types";
+import { AddItemToListRequest, CreateListRequest } from "@/types";
 import { Database } from "@/types/supabase";
 import { SupabaseClient } from "@supabase/supabase-js";
 
@@ -170,6 +170,31 @@ export class ListService {
       .select("id, item_id, unit")
       .single();
     if (error) throw error;
+    return data;
+  }
+
+  /**
+   * Add an item to a list
+   * @param supabase - The Supabase client
+   * @param id - The id of the list
+   * @param item - The item to add
+   * @returns The added item
+   */
+  async addItemToList(supabase: SupabaseClient<Database>, id: string, item: AddItemToListRequest) {
+    const { data, error } = await supabase
+      .schema("base_schema")
+      .from("list_item")
+      .insert({ item_id: item.item_id, list_id: id, quantity: item.quantity, unit: item.unit, meal_id: item.meal_id, meal_quantity: item.meal_quantity })
+      .select("id, item_id, quantity, unit, meal_id, meal_quantity")
+      .single();
+    if (error) throw error;
+
+    const { error: listError } = await supabase
+      .schema("base_schema")
+      .from("shopping_list")
+      .update({ updated_at: new Date().toISOString() })
+      .eq("id", id);
+    if (listError) throw listError;
     return data;
   }
 }
