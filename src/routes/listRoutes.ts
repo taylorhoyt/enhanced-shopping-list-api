@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authenticateUser } from "@/middleware/auth";
-import { createList, getAllLists, getListById, getListItems, getListMeals } from "@/controllers/ListController";
+import { createList, getAllLists, getListById, getListItems, getListMeals, updateItemPurchasedState } from "@/controllers/ListController";
 
 const router = Router();
 
@@ -9,5 +9,6 @@ router.get("/", authenticateUser, getAllLists);
 router.get("/:id", authenticateUser, getListById);
 router.get("/:id/items", authenticateUser, getListItems);
 router.get("/:id/meals", authenticateUser, getListMeals);
+router.put("/:id/items/:listItemId/purchased", authenticateUser, updateItemPurchasedState);
 
 export default router;

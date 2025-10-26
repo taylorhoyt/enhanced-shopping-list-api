@@ -90,7 +90,7 @@ export class ListService {
     const { data, error } = await supabase
       .schema("base_schema")
       .from("list_item")
-      .select("item:item(id, name, category), quantity, unit, is_purchased")
+      .select("id, item:item(id, name, category), quantity, unit, is_purchased")
       .eq("list_id", id);
 
     if (error) throw error;
@@ -121,5 +121,31 @@ export class ListService {
     return uniqueMeals;
   }
 
-  
+  /**
+   * Update the purchased state of an item
+   * @param supabase - The Supabase client
+   * @param id - The id of the list
+   * @param listItemId - The id of the list item
+   * @param is_purchased - The new purchased state
+   * @returns The updated item
+   */
+  async updateItemPurchasedState(supabase: SupabaseClient<Database>, id: string, listItemId: string, is_purchased: boolean) {
+    const { data, error } = await supabase
+      .schema("base_schema")
+      .from("list_item")
+      .update({ is_purchased: is_purchased })
+      .eq("id", listItemId)
+      .select("id, item_id, is_purchased")
+      .single();
+    
+    const { error: listItemError } = await supabase
+      .schema("base_schema")
+      .from("shopping_list")
+      .update({ updated_at: new Date().toISOString() })
+      .eq("id", id);
+      
+    if (listItemError) throw listItemError;
+    if (error) throw error;
+    return data;
+  }
 }
