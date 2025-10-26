@@ -8,7 +8,8 @@ import {
   updateMealName,
   addItemToMeal,
   removeItemFromMeal,
-  updateMealItem
+  updateMealItem,
+  deleteMeal
 } from "@/controllers/MealController";
 
 const router = Router();
@@ -21,5 +22,6 @@ router.put("/:id/name", authenticateUser, updateMealName);
 router.put("/:id/items", authenticateUser, addItemToMeal);
 router.delete("/:id/items/:itemId", authenticateUser, removeItemFromMeal);
 router.put("/:id/items/:itemId", authenticateUser, updateMealItem);
+router.delete("/:id", authenticateUser, deleteMeal);
 
 export default router;

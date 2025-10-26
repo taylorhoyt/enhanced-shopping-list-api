@@ -217,4 +217,21 @@ export class MealService {
     if (error) throw error;
     return data;
   }
+
+  /**
+   * Delete a meal
+   * @param supabase - The Supabase client
+   * @param id - The id of the meal
+   * @returns { success: true } if the meal was deleted
+   */
+  async deleteMeal(supabase: SupabaseClient<Database>, id: string) {
+    const { error } = await supabase
+      .schema("base_schema")
+      .from("meal")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+    return { success: true };
+  }
 }

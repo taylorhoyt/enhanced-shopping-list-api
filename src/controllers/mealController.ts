@@ -139,3 +139,16 @@ export const updateMealItem = async (req: Request, res: Response) => {
   }
 };
 
+
+export const deleteMeal = async (req: Request, res: Response) => {
+  const mealService = new MealService();
+  try {
+    const supabase = getUserSupabaseClient(req.headers.authorization!);
+    const data = await mealService.deleteMeal(supabase, req.params.id);
+
+    return res.status(200).json(data);
+  } catch (error: any) {
+    console.error("Error deleting meal:", error.message);
+    return res.status(500).json({ error: "Error deleting meal" });
+  }
+};
