@@ -1,3 +1,4 @@
+import { CreateItemRequest } from "@/types";
 import { Database } from "@/types/supabase";
 import { SupabaseClient } from "@supabase/supabase-js";
 
@@ -11,7 +12,7 @@ export class ItemService {
     const { data, error } = await supabase
       .schema("base_schema")
       .from("item")
-      .select("id, name, category, created_at, created_by");
+      .select("id, name, category, created_at");
 
     if (error) throw error;
     return data;
@@ -46,6 +47,27 @@ export class ItemService {
       .from("item")
       .select("id, name, category, created_at")
       .eq("category", category);
+
+    if (error) throw error;
+    return data;
+  }
+
+  /**
+   * Create an item
+   * @param supabase - The Supabase client
+   * @param item - The item to create
+   * @returns The created item
+   */
+  async createItem(supabase: SupabaseClient<Database>, item: CreateItemRequest) {
+    const { data, error } = await supabase
+      .schema("base_schema")
+      .from("item")
+      .insert({
+        name: item.name,
+        category: item.category,
+      })
+      .select("id, name, category, created_at")
+      .single();
 
     if (error) throw error;
     return data;

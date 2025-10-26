@@ -41,3 +41,20 @@ export const getItemsByCategory = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Error getting items by category" });
   }
 };
+
+export const createItem = async (req: Request, res: Response) => {
+  const itemService = new ItemService();
+  try {
+    const supabase = getUserSupabaseClient(req.headers.authorization!);
+    const data = await itemService.createItem(supabase, req.body);
+
+    if (!data) {
+      return res.status(400).json({ error: "Failed to create item" });
+    }
+
+    return res.status(200).json(data);
+  } catch (error: any) {
+    console.error("Error creating item:", error.message);
+    return res.status(500).json({ error: "Error creating item" });
+  }
+};
