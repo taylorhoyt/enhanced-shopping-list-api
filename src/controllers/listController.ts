@@ -122,3 +122,16 @@ export const addItemToList = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Error adding item to list" });
   }
 };
+
+export const removeItemFromList = async (req: Request, res: Response) => {
+  const listService = new ListService();
+  try {
+    const supabase = getUserSupabaseClient(req.headers.authorization!);
+    const data = await listService.removeItemFromList(supabase, req.params.id, req.params.listItemId);
+
+    return res.status(200).json(data);
+  } catch (error: any) {
+    console.error("Error removing item from list:", error.message);
+    return res.status(500).json({ error: "Error removing item from list" });
+  }
+};

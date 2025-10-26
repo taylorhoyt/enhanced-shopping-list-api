@@ -197,4 +197,21 @@ export class ListService {
     if (listError) throw listError;
     return data;
   }
+
+  /**
+   * Remove an item from a list
+   * @param supabase - The Supabase client
+   * @param id - The id of the list
+   * @param listItemId - The id of the list item
+   * @returns { success: true } if the item was removed
+   */
+  async removeItemFromList(supabase: SupabaseClient<Database>, id: string, listItemId: string) {
+    const { data, error } = await supabase
+      .schema("base_schema")
+      .from("list_item")
+      .delete()
+      .eq("id", listItemId);
+    if (error) throw error;
+    return { success: true };
+  }
 }
