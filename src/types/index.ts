@@ -93,7 +93,12 @@ export interface CreateMealRequest {
 }
 
 export interface UpdateMealRequest {
-  name: string;
+  name?: string;
+  items?: {
+    item_id: string; // UUID
+    quantity: number;
+    unit?: string;
+  }[];
 }
 
 export interface AddItemToMealRequest {
