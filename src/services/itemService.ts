@@ -1,4 +1,4 @@
-import { CreateItemRequest } from "@/types";
+import { CreateItemRequest, UpdateItemRequest } from "@/types";
 import { Database } from "@/types/supabase";
 import { SupabaseClient } from "@supabase/supabase-js";
 
@@ -69,6 +69,26 @@ export class ItemService {
       .select("id, name, category, created_at")
       .single();
 
+    if (error) throw error;
+    return data;
+  }
+
+  /**
+   * Update an item
+   * @param supabase - The Supabase client
+   * @param id - The id of the item
+   * @param item - The item to update
+   * @returns The updated item
+   */
+  async updateItem(supabase: SupabaseClient<Database>, id: string, item: UpdateItemRequest) {
+    const { data, error } = await supabase
+      .schema("base_schema")
+      .from("item")
+      .update(item)
+      .eq("id", id)
+      .select("id, name, category, created_at")
+      .single();
+      
     if (error) throw error;
     return data;
   }

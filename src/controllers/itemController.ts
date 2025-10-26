@@ -58,3 +58,20 @@ export const createItem = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Error creating item" });
   }
 };
+
+export const updateItem = async (req: Request, res: Response) => {
+  const itemService = new ItemService();
+  try {
+    const supabase = getUserSupabaseClient(req.headers.authorization!);
+    const data = await itemService.updateItem(supabase, req.params.id, req.body);
+
+    if (!data) {
+      return res.status(400).json({ error: "Failed to update item" });
+    }
+
+    return res.status(200).json(data);
+  } catch (error: any) {
+    console.error("Error updating item:", error.message);
+    return res.status(500).json({ error: "Error updating item" });
+  }
+};
